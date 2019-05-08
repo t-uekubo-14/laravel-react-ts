@@ -1,20 +1,50 @@
 import * as React from 'react'
-import { Hello } from './Hello'
+import { Talks } from './Talks'
+import axios from 'axios'
 
-export class Example extends React.Component {
+interface ITalk {
+  id: number
+  message: string
+}
+
+interface IExampleState {
+  talks: ITalk[]
+}
+
+export class Example extends React.Component<{}, IExampleState> {
+  constructor(state: IExampleState) {
+    super(state)
+    this.state = {
+      talks: [],
+    }
+  }
+
+  public componentDidMount() {
+    // axios
+    //   .get('/api/talks')
+    //   .then(res => {
+    //     this.setState({
+    //       talks: res.data,
+    //     })
+    //   })
+    //   .catch(e => {
+    //     console.error(e)
+    //   })
+    this.setState({
+      talks: [
+        { id: 1, message: 'Hello, React!' },
+        { id: 2, message: 'Hello, TypeScript!' },
+      ],
+    })
+  }
+
   public render() {
     return (
       <div className="container">
-        {/* Hello Component */}
-        <Hello compiler="TypeScript" framework="React" />
-        {/* Example Body */}
-        <div className="row justify-content-center">
-          <div className="col-md-8">
-            <div className="card">
-              <div className="card-header">Example Component</div>
-              <div className="card-body">I'm an example component!</div>
-            </div>
-          </div>
+        <div>フォーム</div>
+        <div>
+          リスト（タイムラインのイメージ）
+          <Talks talks={this.state.talks} />
         </div>
       </div>
     )
