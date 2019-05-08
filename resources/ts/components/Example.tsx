@@ -20,22 +20,23 @@ export class Example extends React.Component<{}, IExampleState> {
   }
 
   public componentDidMount() {
-    // axios
-    //   .get('/api/talks')
-    //   .then(res => {
-    //     this.setState({
-    //       talks: res.data,
-    //     })
-    //   })
-    //   .catch(e => {
-    //     console.error(e)
-    //   })
-    this.setState({
-      talks: [
-        { id: 1, message: 'Hello, React!' },
-        { id: 2, message: 'Hello, TypeScript!' },
-      ],
-    })
+    axios
+      .get('/api/talk')
+      .then(res => {
+        console.info(res)
+        this.setState({
+          talks: res.data,
+        })
+      })
+      .catch(e => {
+        console.error(e)
+      })
+    // this.setState({
+    //   talks: [
+    //     { id: 1, message: 'Hello, React!' },
+    //     { id: 2, message: 'Hello, TypeScript!' },
+    //   ],
+    // })
   }
 
   public render() {
