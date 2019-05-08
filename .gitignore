@@ -25,3 +25,5 @@ note.md
 /storage/*.key
 yarn-error.log
 .phpunit.result.cache
+
+# build/
