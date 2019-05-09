@@ -1,8 +1,184 @@
 // Fonts
-@import url("https://fonts.googleapis.com/css?family=Nunito");
+@import url('https://fonts.googleapis.com/css?family=Nunito');
 
 // Variables
-@import "variables";
+@import 'variables';
 
 // Bootstrap
-@import "~bootstrap/scss/bootstrap";
+// @import '~bootstrap/scss/bootstrap';
+
+html {
+  font-size: 62.5%;
+}
+
+body {
+  font-family: $font-family-sans-serif;
+  font-size: 1.6rem;
+  line-height: 2;
+  margin: 0;
+  > #app,
+  > .wrapper {
+    min-height: 100vh;
+    position: relative;
+    padding-bottom: $footer-height;
+    box-sizing: border-box;
+    background-color: $bg-color;
+  }
+}
+
+h1 {
+  font-size: 36px;
+  font-size: calc(2.4rem + ((1vw - 0.64rem) * 2.1429));
+  line-height: 1.3;
+}
+h2 {
+  font-size: 24px;
+  font-size: calc(2rem + ((1vw - 0.64rem) * 0.7143));
+  line-height: 1.3;
+}
+@media (min-width: 1200px) {
+  h1 {
+    font-size: 3.6rem;
+  }
+  h2 {
+    font-size: 2.4rem;
+  }
+}
+@media screen and (max-width: 640px) {
+  body {
+    line-height: 2;
+  }
+  h1 {
+    font-size: 2.4rem;
+  }
+  h2 {
+    font-size: 2rem;
+  }
+}
+
+a {
+  text-decoration: none;
+}
+
+p,
+pre {
+  margin: 0;
+  font-family: $font-family-sans-serif;
+}
+
+header {
+  background-color: $base-color;
+
+  .brand {
+    display: inline-block;
+    a {
+      display: block;
+      padding: 3px 10px;
+      color: $brand-color-main;
+    }
+  }
+  nav {
+    display: inline-block;
+    ul {
+      display: inline-block;
+      margin: 0;
+      list-style-type: none;
+      li {
+        display: inline-block;
+        &.active {
+          background-color: black;
+          box-shadow: 0 -2px 0 0 $brand-color-main inset;
+        }
+        a {
+          display: block;
+          padding: 3px 7px;
+          color: white;
+          &:hover,
+          &:focus {
+            background-color: rgb(58, 58, 58);
+          }
+        }
+      }
+    }
+  }
+}
+
+main {
+  padding: 0.5rem 1rem;
+}
+
+footer {
+  padding: 0.5rem 1rem;
+  background-color: hsla(40, 80%, 60%, 0.8);
+  color: $base-color;
+
+  width: 100%;
+  text-align: center;
+  padding: $footer-padding;
+  position: absolute;
+  bottom: 0;
+}
+
+.ExampleTalks {
+  .NewTalk .card {
+    border-radius: 3px;
+    margin-bottom: 0.5rem;
+    background-color: hsl(200, 0%, 99%);
+    box-shadow: 0 0 1px hsla(200, 0%, 10%, 0.4);
+    .inputGroup {
+      box-sizing: border-box;
+      input {
+        box-sizing: border-box;
+        width: calc(100% - 5rem);
+        border-top-left-radius: 0.3rem;
+        border-bottom-left-radius: 0.3rem;
+      }
+      button {
+        box-sizing: border-box;
+        width: 5rem;
+        border-top-right-radius: 0.3rem;
+        border-bottom-right-radius: 0.3rem;
+      }
+      input,
+      button {
+        font-family: $font-family-sans-serif;
+        font-size: 1.6rem;
+        border: none;
+        box-shadow: 0 0 1px hsla(200, 0%, 10%, 0.8);
+        padding: 0.5rem 0.5rem;
+        &:active,
+        &:focus,
+        &:hover {
+          box-shadow: 0 0 1px hsla(200, 95%, 40%, 0.8);
+        }
+      }
+    }
+  }
+  .Talks .card {
+    border-radius: 3px;
+    margin-bottom: 0.5rem;
+    background-color: hsl(200, 0%, 99%);
+    box-shadow: 0 0 1px hsla(200, 0%, 10%, 0.4);
+
+    .card-header {
+      padding: 0.5rem;
+      .title {
+        display: inline-block;
+      }
+      .functions {
+        float: right;
+        button {
+          border-radius: 0.3rem;
+          font-family: $font-family-sans-serif;
+          font-size: 1.6rem;
+          border: none;
+          box-shadow: 0 0 1px hsla(200, 0%, 10%, 0.8);
+          padding: 0.3rem 0.7rem;
+        }
+      }
+    }
+    .card-body {
+      padding: 0.5rem;
+    }
+  }
+}

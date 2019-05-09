@@ -8,6 +8,7 @@ use App\Http\Controllers\Controller;
 
 class TalkController extends Controller
 {
+
     /**
      * Display a listing of the resource.
      *
@@ -15,17 +16,7 @@ class TalkController extends Controller
      */
     public function index()
     {
-        return Talk::all();
-    }
-
-    /**
-     * Show the form for creating a new resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
-    public function create()
-    {
-        //
+        return Talk::orderBy('created_at', 'desc')->get();
     }
 
     /**
@@ -36,7 +27,12 @@ class TalkController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        $talk = new Talk;
+        $talk->message = empty($request->message) ? 'null' : $request->message;
+        $talk->contributer = 0; //$request->contributer;
+        $talk->save();
+
+        return $this->index();
     }
 
     /**
@@ -46,17 +42,6 @@ class TalkController extends Controller
      * @return \Illuminate\Http\Response
      */
     public function show(Talk $talk)
-    {
-        //
-    }
-
-    /**
-     * Show the form for editing the specified resource.
-     *
-     * @param  \App\Talk  $talk
-     * @return \Illuminate\Http\Response
-     */
-    public function edit(Talk $talk)
     {
         //
     }
@@ -81,6 +66,8 @@ class TalkController extends Controller
      */
     public function destroy(Talk $talk)
     {
-        //
+        $talk->delete();
+
+        return $this->index();
     }
 }
