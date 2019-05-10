@@ -1,9 +1,11 @@
 import * as React from 'react'
+import dayjs from 'dayjs'
 
 export interface ITalk {
   id: number
   message: string
-  contributer: number
+  contributer_id: number
+  contributer_name: string
   created_at: Date
 }
 
@@ -20,7 +22,9 @@ export class Talk extends React.Component<ITalkProps, {}> {
             <div className="card-header">
               {/* Who, When, Option */}
               <p className="title">
-                {this.props.contributer} {this.props.created_at}
+                {this.props.contributer_name +
+                  ' : ' +
+                  dayjs(this.props.created_at).format('MM/DD hh:mm')}
               </p>
               {/* Shortcut Options (Reply, Delete) */}
               <div className="functions">

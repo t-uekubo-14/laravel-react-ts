@@ -1,8 +1,11 @@
 import * as React from 'react'
 import { Link } from 'react-router-dom'
+import { withRouter } from 'react-router'
+import { RouteComponentProps } from 'react-router-dom'
+import userStore from '../stores/userStore'
 
-interface IContainer {
-  id: number
+export interface IContainer {
+  // id: number
   label: string
   pathname: string
   component: any //React.Component
@@ -16,11 +19,29 @@ const ContainerLink: React.FC<IContainer> = props => {
   )
 }
 
-interface IProps {
+export interface IHeaderProps extends RouteComponentProps<{}> {
+  refreshUserState: Function
   containers: IContainer[]
 }
 
-export class Header extends React.Component<IProps, {}> {
+export interface IHeaderState {
+  userState: any
+}
+
+export class Header extends React.Component<IHeaderProps, IHeaderState> {
+  constructor(props: IHeaderProps) {
+    super(props)
+    this.state = {
+      userState: userStore.state,
+    }
+    // this.refreshUserState = this.refreshUserState
+  }
+  private logout() {
+    let self = this
+    userStore.logout(() => {
+      self.props.history.push('/home')
+    })
+  }
   public render() {
     return (
       <header>
@@ -32,12 +53,24 @@ export class Header extends React.Component<IProps, {}> {
         {/* Header Navigations */}
         <nav>
           <ul>
-            {this.props.containers.map(c => (
-              <ContainerLink key={c.id} {...c} />
+            {this.props.containers.map((c, i) => (
+              <ContainerLink key={i} {...c} />
             ))}
+            {/* Login or Logout */}
+            {this.state.userState.authenticated ? (
+              <li>
+                <a onClick={this.logout}>Logout</a>
+              </li>
+            ) : (
+              <li>
+                <Link to="/login">Login</Link>
+              </li>
+            )}
           </ul>
         </nav>
       </header>
     )
   }
 }
+
+export default withRouter(Header)

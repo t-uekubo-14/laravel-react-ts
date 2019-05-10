@@ -13,11 +13,22 @@ use Illuminate\Http\Request;
 |
 */
 
-Route::middleware('auth:api')->get('/user', function (Request $request) {
-    return $request->user();
-});
+// Route::middleware('auth:api')->get('/user', function (Request $request) {
+//     return $request->user();
+// });
 
-// Route::apiResource('talk', 'Api\TalkController');
-Route::group(['middleware' => 'api'], function () {
-    Route::apiResource('talk', 'Api\TalkController');
+Route::group([
+  'middleware' => 'api'
+], function () {
+  // Authentication
+  Route::post('authenticate',  'AuthenticateController@authenticate');
+  Route::group(['middleware' => 'jwt.auth'], function () {
+    Route::resource('tasks',  'TaskController');
+    Route::get('me',  'AuthenticateController@getCurrentUser');
+    Route::get('logout',  'AuthenticateController@logout')->middleware('jwt.refresh');
+  });
+
+  // Main API
+  Route::apiResource('talk', 'Api\TalkController');
+  Route::apiResource('user', 'Api\UserController');
 });

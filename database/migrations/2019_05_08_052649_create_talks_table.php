@@ -13,14 +13,16 @@ class CreateTalksTable extends Migration
      */
     public function up()
     {
-        Schema::dropIfExists('talks');
         Schema::create('talks', function (Blueprint $table) {
             $table->bigIncrements('id');
-            $table->string('title')->nullable();
             $table->string('message');
-            $table->integer('contributer');
+            $table->integer('contributer_id');
             $table->integer('source_talk_id')->nullable();
             $table->timestamps();
+
+            // $table->foreign('contributer_id')
+            //     ->references('id')->on('users')
+            //     ->onDelete('cascade');
         });
     }
 

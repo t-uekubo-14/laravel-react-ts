@@ -16,7 +16,17 @@ class TalkController extends Controller
      */
     public function index()
     {
-        return Talk::orderBy('created_at', 'desc')->get();
+
+        // Talk
+        //     ::join('users', function ($join) {
+        //         $join->on('users.id', '=', 'talks.contributer_id')
+        //             ->where('contacts.user_id', '>', 5);
+        //     })
+        //     ->get();
+
+        return Talk::join('users', 'users.id', '=', 'talks.contributer_id')
+            ->select('talks.*', 'users.name as contributer_name')
+            ->orderBy('talks.created_at', 'desc')->get();
     }
 
     /**
@@ -29,7 +39,7 @@ class TalkController extends Controller
     {
         $talk = new Talk;
         $talk->message = empty($request->message) ? 'null' : $request->message;
-        $talk->contributer = 0; //$request->contributer;
+        $talk->contributer_id = 0; //$request->contributer;
         $talk->save();
 
         return $this->index();

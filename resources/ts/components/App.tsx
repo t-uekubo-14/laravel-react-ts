@@ -1,43 +1,79 @@
 import * as React from 'react'
-import { BrowserRouter as Router, Route, Link } from 'react-router-dom'
+import {
+  BrowserRouter,
+  Route,
+  Switch,
+  RouteComponentProps,
+} from 'react-router-dom'
+
+import userStore from '../stores/userStore'
 
 import { Home } from '../containers/Home'
-import { Header } from './Header'
+import { Header, IHeaderProps, IContainer } from './Header'
 import { ExampleTalks } from '../containers/ExampleTalks'
-// import { ExampleTopics } from '../containers/ExampleTopics'
+import { UsersContainer } from '../containers/UsersContainer'
+import { Login } from '../containers/Login'
 
-interface IContainer {
-  id: number
-  label: string
-  pathname: string
-  component: any //React.Component
-}
+export class App extends React.Component<
+  RouteComponentProps,
+  { userState: any }
+> {
+  constructor(props: RouteComponentProps) {
+    super(props)
 
-export class App extends React.Component<{}, {}> {
+    userStore.init()
+
+    this.state = {
+      userState: userStore.state,
+    }
+    this.refreshUserState = this.refreshUserState.bind(this)
+  }
+  private refreshUserState(userState: any) {
+    this.setState({ userState })
+  }
   private containers: IContainer[] = [
-    { id: 1, pathname: '/example', label: 'Example', component: ExampleTalks },
-    { id: 2, pathname: '/home', label: 'Home', component: Home },
+    { pathname: '/example', label: 'Example', component: ExampleTalks },
+    { pathname: '/user', label: 'User', component: UsersContainer },
     // { id: 2, pathname: '/topics', label: 'Topics' },
   ]
   public render() {
     return (
-      <Router>
+      <BrowserRouter>
         {/* Header */}
-        <Header containers={this.containers} />
+        <Header
+          refreshUserState={this.refreshUserState}
+          containers={this.containers}
+          {...this.props}
+        />
 
         {/* Container */}
         <main>
           <Route exact path="/" component={Home} />
-          {this.containers.map(c => (
-            <Route key={c.id} path={c.pathname} component={c.component} />
+          {this.containers.map((c, i) => (
+            <Route key={i} path={c.pathname} component={c.component} />
           ))}
-          {/* <Route path="/example" component={ExampleTalks} /> */}
-          {/* <Route path="/topics" component={ExampleTopics} /> */}
+          <Route
+            path="/login"
+            render={() => (
+              <Login refreshUserState={this.refreshUserState} {...this.props} />
+            )}
+          />
         </main>
 
+        <Route>
+          <section>
+            <h3>Debug Information</h3>
+            <div>
+              {this.state.userState.authenticated
+                ? this.state.userState.user.name
+                : 'Un authenticated'}
+            </div>
+          </section>
+        </Route>
+
         {/* Footer */}
-        <footer>&copy;2019 t-uekubo-14</footer>
-      </Router>
+        <footer>&copy; 2019 t-uekubo-14</footer>
+      </BrowserRouter>
     )
   }
 }
