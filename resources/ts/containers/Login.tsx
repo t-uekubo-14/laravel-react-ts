@@ -1,10 +1,13 @@
 import * as React from 'react'
+import { connect } from 'react-redux'
 import { withRouter, RouteComponentProps } from 'react-router-dom'
+import { History } from 'history'
+import userStore from '../store/user/userStore'
 
-import userStore from '../stores/userStore'
-
-interface ILoginProps extends RouteComponentProps<{}> {
+// interface ILoginProps extends RouteComponentProps<{}> {
+interface ILoginProps {
   refreshUserState: Function
+  history: History
 }
 interface ILoginState {
   email: string
@@ -14,7 +17,7 @@ interface ILoginState {
   userState: any
 }
 
-export class Login extends React.Component<ILoginProps, ILoginState> {
+class Login extends React.Component<ILoginProps, ILoginState> {
   constructor(props: ILoginProps) {
     super(props)
 
@@ -114,4 +117,20 @@ export class Login extends React.Component<ILoginProps, ILoginState> {
   }
 }
 
-export default withRouter(Login)
+const mapStateToProps = null
+// const mapStateToProps = ({ talks }: ApplicationState) => ({
+//   loading: talks.loading,
+//   errors: talks.errors,
+//   data: talks.data,
+// })
+
+const mapDispatchToProps = {
+  // fetchTalks,
+  // insertTalk,
+  // deleteTalk,
+}
+
+export default connect(
+  mapStateToProps,
+  mapDispatchToProps
+)(Login)

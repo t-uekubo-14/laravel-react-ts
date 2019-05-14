@@ -1,8 +1,10 @@
 import * as React from 'react'
+import { connect } from 'react-redux'
 import { Link } from 'react-router-dom'
 import { withRouter } from 'react-router'
 import { RouteComponentProps } from 'react-router-dom'
-import userStore from '../stores/userStore'
+import userStore from '../store/user/userStore'
+import { History } from 'history'
 
 export interface IContainer {
   // id: number
@@ -19,9 +21,11 @@ const ContainerLink: React.FC<IContainer> = props => {
   )
 }
 
-export interface IHeaderProps extends RouteComponentProps<{}> {
+// export interface IHeaderProps extends RouteComponentProps<{}> {
+export interface IHeaderProps {
   refreshUserState: Function
   containers: IContainer[]
+  history: History
 }
 
 export interface IHeaderState {
@@ -73,4 +77,20 @@ export class Header extends React.Component<IHeaderProps, IHeaderState> {
   }
 }
 
-export default withRouter(Header)
+const mapStateToProps = null
+// const mapStateToProps = ({ talks }: ApplicationState) => ({
+//   loading: talks.loading,
+//   errors: talks.errors,
+//   data: talks.data,
+// })
+
+const mapDispatchToProps = {
+  // fetchTalks,
+  // insertTalk,
+  // deleteTalk,
+}
+
+export default connect(
+  mapStateToProps,
+  mapDispatchToProps
+)(Header)

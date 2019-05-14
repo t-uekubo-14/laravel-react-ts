@@ -6,19 +6,20 @@ import {
   RouteComponentProps,
 } from 'react-router-dom'
 
-import userStore from '../stores/userStore'
+import userStore from '../store/user/userStore'
 
 import { Home } from '../containers/Home'
 import { Header, IHeaderProps, IContainer } from './Header'
-import { ExampleTalks } from '../containers/ExampleTalks'
+import ExampleTalks from '../containers/ExampleTalks'
 import { UsersContainer } from '../containers/UsersContainer'
-import { Login } from '../containers/Login'
+import Login from '../containers/Login'
+import { History } from 'history'
 
-export class App extends React.Component<
-  RouteComponentProps,
-  { userState: any }
-> {
-  constructor(props: RouteComponentProps) {
+export interface IAppProps {
+  history: History
+}
+export class App extends React.Component<IAppProps, { userState: any }> {
+  constructor(props: IAppProps) {
     super(props)
 
     userStore.init()

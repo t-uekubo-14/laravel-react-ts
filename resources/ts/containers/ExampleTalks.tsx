@@ -1,36 +1,55 @@
 import * as React from 'react'
-import { Talks, ITalksProps, ITalk } from '../components/Talks'
 import axios from 'axios'
+import { connect } from 'react-redux'
+
+import { Talks, ITalksProps } from '../components/Talks'
+
+import { ApplicationState, ConnectedReduxProps } from '../store'
+import {
+  fetchTalks,
+  insertTalkRequest,
+  deleteTalkRequest,
+} from '../store/talks/actions'
+import { Talk, TalksState } from '../store/talks/types'
 
 interface IExampleState {
-  talks: ITalk[]
-  newTalk: ITalk
+  // talks: Talk[]
+  newTalk: Talk
 }
 
-export class ExampleTalks extends React.Component<{}, IExampleState> {
-  constructor(props: {}) {
+interface IPropsFromState extends TalksState {}
+interface IPropsFromDispatch {
+  fetchTalks: typeof fetchTalks
+}
+
+type IProps = IPropsFromState & IPropsFromDispatch & ConnectedReduxProps
+
+class ExampleTalks extends React.Component<IProps, IExampleState> {
+  constructor(props: IProps) {
     super(props)
     this.state = {
-      talks: [],
-      newTalk: { message: '' } as ITalk,
+      // talks: [],
+      newTalk: { message: '' } as Talk,
     }
     this.inputNewTalk = this.inputNewTalk.bind(this)
     this.postNewTalk = this.postNewTalk.bind(this)
     this.deleteTalk = this.deleteTalk.bind(this)
   }
 
+  // private handleAddTalk() {
+  //   this.props.insertTalk(this.state.newTalk)
+  //   this.setState({ newTalk: { message: '' } as Talk })
+  // }
+
   private postNewTalk() {
-    console.info({
-      message: this.state.newTalk.message,
-    })
     axios
       .post('/api/talk', {
         message: this.state.newTalk.message,
       })
       .then(res => {
         this.setState({
-          talks: res.data,
-          newTalk: { message: '' } as ITalk,
+          // talks: res.data,
+          newTalk: { message: '' } as Talk,
         })
       })
       .catch(e => {
@@ -38,12 +57,12 @@ export class ExampleTalks extends React.Component<{}, IExampleState> {
       })
   }
 
-  private deleteTalk(talk: ITalk) {
+  private deleteTalk(talk: Talk) {
     axios
       .delete(`/api/talk/${talk.id}`, { data: talk })
       .then(res => {
         this.setState({
-          talks: res.data,
+          // talks: res.data,
         })
       })
       .catch(e => {
@@ -60,17 +79,18 @@ export class ExampleTalks extends React.Component<{}, IExampleState> {
   }
 
   public componentDidMount() {
-    axios
-      .get('/api/talk')
-      .then(res => {
-        console.info(res)
-        this.setState({
-          talks: res.data,
-        })
-      })
-      .catch(e => {
-        console.error(e)
-      })
+    this.props.fetchTalks()
+    // axios
+    //   .get('/api/talk')
+    //   .then(res => {
+    //     console.info(res)
+    //     this.setState({
+    //       talks: res.data,
+    //     })
+    //   })
+    //   .catch(e => {
+    //     console.error(e)
+    //   })
   }
 
   public render() {
@@ -90,9 +110,26 @@ export class ExampleTalks extends React.Component<{}, IExampleState> {
           </div>
         </div>
         <div>
-          <Talks talks={this.state.talks} deleteTalk={this.deleteTalk} />
+          <Talks talks={this.props.data} deleteTalk={this.deleteTalk} />
         </div>
       </div>
     )
   }
 }
+
+const mapStateToProps = ({ talks }: ApplicationState) => ({
+  loading: talks.loading,
+  errors: talks.errors,
+  data: talks.data,
+})
+
+const mapDispatchToProps = {
+  fetchTalks,
+  insertTalkRequest,
+  deleteTalkRequest,
+}
+
+export default connect(
+  mapStateToProps,
+  mapDispatchToProps
+)(ExampleTalks)
