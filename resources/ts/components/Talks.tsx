@@ -58,9 +58,13 @@ export class Talks extends React.Component<ITalksProps, {}> {
     const deleteTalk = (talk: ITalk) => this.props.deleteTalk(talk)
     return (
       <div>
-        {this.props.talks.map(talk => (
-          <Talk key={talk.id} deleteTalk={deleteTalk} {...talk} />
-        ))}
+        {this.props.talks ? (
+          this.props.talks.map(talk => (
+            <Talk key={talk.id} deleteTalk={deleteTalk} {...talk} />
+          ))
+        ) : (
+          <div />
+        )}
       </div>
     )
   }

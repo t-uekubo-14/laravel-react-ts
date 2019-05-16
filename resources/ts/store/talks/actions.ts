@@ -3,6 +3,16 @@ import { Talk } from './types'
 import { Action, Dispatch } from 'redux'
 import axios from 'axios'
 
+// Input
+export interface InputNewTalk extends Action {
+  type: ActionTypes.INPUT_NEW_TALK
+  newTalk: Talk
+}
+export const inputNewTalk = (newTalk: Talk): InputNewTalk => ({
+  type: ActionTypes.INPUT_NEW_TALK,
+  newTalk,
+})
+
 // Fetch Talks
 export type FetchTalksRequestPayload = {}
 export interface FetchTalksRequestAction extends Action {
@@ -33,16 +43,11 @@ export const fetchTalksFailure = (
 })
 
 // Insert Talk
-export type InsertTalkRequestPayload = {}
 export interface InsertTalkRequestAction extends Action {
   type: ActionTypes.INSERT_TALK_REQUEST
-  payload: InsertTalkRequestPayload
 }
-export const insertTalkRequest = (
-  payload: InsertTalkRequestPayload
-): InsertTalkRequestAction => ({
+export const insertTalkRequest = (): InsertTalkRequestAction => ({
   type: ActionTypes.INSERT_TALK_REQUEST,
-  payload,
 })
 
 export interface InsertTalkSuccessAction extends Action {
@@ -66,16 +71,11 @@ export const insertTalkFailure = (
 })
 
 // Delete Talk
-export type DeleteTalkRequestPayload = {}
 export interface DeleteTalkRequestAction extends Action {
   type: ActionTypes.DELETE_TALK_REQUEST
-  payload: DeleteTalkRequestPayload
 }
-export const deleteTalkRequest = (
-  payload: DeleteTalkRequestPayload
-): DeleteTalkRequestAction => ({
+export const deleteTalkRequest = (): DeleteTalkRequestAction => ({
   type: ActionTypes.DELETE_TALK_REQUEST,
-  payload,
 })
 
 export interface DeleteTalkSuccessAction extends Action {
@@ -110,40 +110,26 @@ export const fetchTalks = () => {
   }
 }
 
-// let nextTodoId = 0
-// export const addTodo = (content: any) => ({
-//   type: ActionTypes.ADD_TODO,
-//   payload: {
-//     id: ++nextTodoId,
-//     content,
-//   },
-// })
+export const insertTalk = (talk: Talk) => {
+  const params = {
+    message: talk.message,
+  }
+  return (dispatch: Dispatch) => {
+    dispatch(insertTalkRequest())
+    return axios
+      .post(`/api/talk`, params)
+      .then(res => dispatch(insertTalkSuccess(res.data)))
+      .catch(err => dispatch(insertTalkFailure(err)))
+  }
+}
 
-// export const onNumClick = number => ({
-//   type: ActionTypes.INPUT_NUMBER,
-//   number,
-// })
-// export const onPlusClick = () => ({
-//   type: ActionTypes.PLUS,
-// })
-
-// export function postTalk(data: any) {
-//   return (dispatch: any) => {
-//     dispatch(postTalkRequest())
-//     axios
-//       .post('/todo_list', data)
-//       .then(response => dispatch(postTalkResponse(response.data.result)))
-//       .catch(() => dispatch(postTalkResponse(false)))
-//   }
-// }
-// function postTalkRequest() {
-//   return {
-//     type: ActionTypes.POST_TALK_REQUEST,
-//   }
-// }
-// function postTalkResponse(result: any) {
-//   return {
-//     type: ActionTypes.POST_TALK_RESULT,
-//     result,
-//   }
-// }
+export const deleteTalk = (talk: Talk) => {
+  const params = { data: talk }
+  return (dispatch: Dispatch) => {
+    dispatch(deleteTalkRequest())
+    return axios
+      .delete(`/api/talk/${talk.id}`, params)
+      .then(res => dispatch(deleteTalkSuccess(res.data)))
+      .catch(err => dispatch(deleteTalkFailure(err)))
+  }
+}

@@ -4,6 +4,7 @@
  */
 enum ActionTypes {
   // Talk
+  INPUT_NEW_TALK,
   FETCH_TALKS_REQUEST,
   FETCH_TALKS_SUCCESS,
   FETCH_TALKS_FAILURE,

@@ -28,4 +28,6 @@ export interface TalksState {
   readonly loading: boolean
   readonly data: Talk[]
   readonly errors?: string
+
+  readonly newTalk: Talk
 }
