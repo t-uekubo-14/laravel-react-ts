@@ -26,9 +26,11 @@ Route::group([
     Route::resource('tasks',  'TaskController');
     Route::get('me',  'AuthenticateController@getCurrentUser');
     Route::get('logout',  'AuthenticateController@logout')->middleware('jwt.refresh');
+
+    // Private Main API
+    Route::apiResource('user', 'Api\UserController');
   });
 
-  // Main API
+  // Public Main API
   Route::apiResource('talk', 'Api\TalkController');
-  Route::apiResource('user', 'Api\UserController');
 });

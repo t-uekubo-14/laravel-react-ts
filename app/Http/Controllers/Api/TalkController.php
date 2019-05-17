@@ -24,7 +24,7 @@ class TalkController extends Controller
         //     })
         //     ->get();
 
-        return Talk::join('users', 'users.id', '=', 'talks.contributer_id')
+        return Talk::leftJoin('users', 'users.id', '=', 'talks.contributer_id')
             ->select('talks.*', 'users.name as contributer_name')
             ->orderBy('talks.created_at', 'desc')->get();
     }

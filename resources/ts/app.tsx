@@ -1,22 +1,21 @@
 import * as React from 'react'
 import * as ReactDOM from 'react-dom'
-
 import { Provider } from 'react-redux'
+
 import { ApplicationState } from './store'
-import configureStore from './configureStore'
-import { createBrowserHistory } from 'history'
-import * as serviceWorker from './serviceWorker'
+import { configureHttp, configureStore, history, serviceWorker } from './utils'
 
-import './config'
+import App from './components/App'
 
-import { App } from './components/App'
+// Configuration HTTP (Axios)
+configureHttp()
 
-const history = createBrowserHistory()
+// Configuration Store (including Middleware)
 const store = configureStore(history, {} as ApplicationState)
 
 ReactDOM.render(
   <Provider store={store}>
-    <App history={history} />
+    <App />
   </Provider>,
   document.getElementById('app')
 )

@@ -1,5 +1,5 @@
 import * as React from 'react'
-import { Users, IUser } from '../components/Users'
+import { Users, IUser } from './User'
 import axios from 'axios'
 
 interface IExampleState {
@@ -7,7 +7,10 @@ interface IExampleState {
   newUser: IUser
 }
 
-export class UsersContainer extends React.Component<{}, IExampleState> {
+export default class UsersPageContainer extends React.Component<
+  {},
+  IExampleState
+> {
   constructor(props: {}) {
     super(props)
     this.state = {

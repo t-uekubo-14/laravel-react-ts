@@ -101,7 +101,7 @@ export const deleteTalkFailure = (
 // --- HTTP ---
 
 export const fetchTalks = () => {
-  return (dispatch: Dispatch) => {
+  return (dispatch: Dispatch<Action>) => {
     dispatch(fetchTalksRequest())
     return axios
       .get(`/api/talk`)
@@ -114,7 +114,7 @@ export const insertTalk = (talk: Talk) => {
   const params = {
     message: talk.message,
   }
-  return (dispatch: Dispatch) => {
+  return (dispatch: Dispatch<Action>) => {
     dispatch(insertTalkRequest())
     return axios
       .post(`/api/talk`, params)
@@ -125,7 +125,7 @@ export const insertTalk = (talk: Talk) => {
 
 export const deleteTalk = (talk: Talk) => {
   const params = { data: talk }
-  return (dispatch: Dispatch) => {
+  return (dispatch: Dispatch<Action>) => {
     dispatch(deleteTalkRequest())
     return axios
       .delete(`/api/talk/${talk.id}`, params)

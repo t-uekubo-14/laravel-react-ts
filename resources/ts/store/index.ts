@@ -1,12 +1,17 @@
 import { combineReducers, Dispatch, Action, AnyAction } from 'redux'
+import { connectRouter } from 'connected-react-router'
 import { History } from 'history'
+
 import { TalksState } from './talks/types'
 import { talksReducer } from './talks/reducer'
+import { AuthState } from './auth/types'
+import { authReducer } from './auth/reducer'
 
 // The top-level state object
 export interface ApplicationState {
   // layout: LayoutState
   talks: TalksState
+  auth: AuthState
   // teams: TeamsState
   // router: RouterState
 }
@@ -20,8 +25,9 @@ export const createRootReducer = (history: History) =>
   combineReducers({
     // layout: layoutReducer,
     talks: talksReducer,
+    auth: authReducer,
     // teams: teamsReducer,
-    // router: connectRouter(history)
+    router: connectRouter(history),
   })
 
 // import { compose, createStore } from 'redux'

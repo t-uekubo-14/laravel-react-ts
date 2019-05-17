@@ -18,7 +18,7 @@ const isLocalhost = Boolean(
     )
 )
 
-export function register(config: any) {
+function register(config: any) {
   if (process.env.NODE_ENV === 'production' && 'serviceWorker' in navigator) {
     // The URL constructor is available in all browsers that support SW.
     const publicUrl = new URL(
@@ -123,10 +123,15 @@ function checkValidServiceWorker(swUrl: string, config: any) {
     })
 }
 
-export function unregister() {
+function unregister() {
   if ('serviceWorker' in navigator) {
     navigator.serviceWorker.ready.then(registration => {
       registration.unregister()
     })
   }
+}
+
+export const serviceWorker = {
+  register,
+  unregister,
 }
